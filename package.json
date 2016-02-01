@@ -1,0 +1,27 @@
+{
+  "name": "wpbuilder",
+  "version": "0.0.1",
+  "description": "Webpack build system for fast building architecture ",
+  "author": "Tony Sch. <anthony@abrend.com> (https://github.com/mochachai)",
+  "license": "MIT",
+  "scripts": {
+    "lint": "$(npm bin)/eslint src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felab/wpbuilder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/felab/wpbuilder/issues"
+  },
+  "keywords": [
+    "webpack",
+    "builder"
+  ],
+  "devDependencies": {
+    "babel-eslint": "^5.0.0-beta8",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^4.0.0",
+    "eslint-plugin-react": "^3.16.1"
+  }
+}
