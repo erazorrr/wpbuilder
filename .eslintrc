@@ -1,6 +1,27 @@
 {
-  "extends": "airbnb",
-  "plugins": [
-    "react"
-  ]
+  "rules": {
+    "no-var": 0,
+    "valid-jsdoc": 2,
+    "indent": [
+      2,
+      4
+    ],
+    "no-console": 0,
+    "quotes": [
+      2,
+      "single"
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": [
+      2,
+      "always"
+    ]
+  },
+  "env": {
+    "node": true
+  },
+  "extends": "eslint:recommended"
 }
