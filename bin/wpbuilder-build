@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var Program = require('commander');
+var webpack = require('wepback');
+var wpBuilder = require('./../lib/index.js');
+
+Program
+    .option('-e, --env [env]', 'specify an environment', 'production')
+    .parse(process.argv);
+
+
+wpBuilder(Program.env).then(function (config) {
+    webpack(config, function (err, stats) {
+        if (err) throw(err);
+
+        console.log(stats.toString({
+            colors: true
+        }));
+    });
+}).catch(function (err) {
+    console.error(err);
+
+    return err;
+});

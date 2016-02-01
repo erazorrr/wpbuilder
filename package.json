@@ -1,6 +1,6 @@
 {
   "name": "wpbuilder",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Webpack build system for fast building architecture ",
   "author": "Tony Sch. <anthony@abrend.com> (https://github.com/mochachai)",
   "license": "MIT",
@@ -22,5 +22,17 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "eslint-plugin-react": "^3.16.1"
+  },
+  "bin": {
+    "wpbuilder": "./bin/wpbuilder",
+    "wpbuilder-serve": "./bin/wpbuilder-serve",
+    "wpbuilder-build": "./bin/wpbuilder-build"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "lodash.isarray": "^4.0.0",
+    "lodash.merge": "^4.0.3",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
   }
 }

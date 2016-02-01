@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+var Program = require('commander');
+
+
+if (process.argv.length === 2) {
+    process.argv.push('--help');
+}
+
+
+Program
+    .version(require('./../package.json').version)
+    .command('serve [platform]', 'runs server application for develop')
+    .command('build [platform]', 'builds application');
+
+Program.parse(process.argv);
