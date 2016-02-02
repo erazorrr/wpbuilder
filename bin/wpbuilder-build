@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var Program = require('commander');
-var webpack = require('wepback');
+var webpack = require('webpack');
 var wpBuilder = require('./../lib/index.js');
 
 Program
