@@ -9,16 +9,12 @@ Program
     .parse(process.argv);
 
 
-wpBuilder(Program.env).then(function (config) {
+wpBuilder(Program.env, function (config) {
     webpack(config, function (err, stats) {
-        if (err) throw(err);
+        if (err) throw err;
 
         console.log(stats.toString({
             colors: true
         }));
     });
-}).catch(function (err) {
-    console.error(err);
-
-    return err;
 });
