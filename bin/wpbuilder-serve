@@ -13,7 +13,7 @@ Program
     .parse(process.argv);
 
 
-wpBuilder(Program.env).then(function (config) {
+wpBuilder(Program.env, function (config) {
     var result_config = config;
 
     result_config.entry.app.push(
@@ -21,9 +21,10 @@ wpBuilder(Program.env).then(function (config) {
         'webpack/hot/only-dev-server'
     );
 
+    console.log(result_config.plugins);
     var compiler = webpack(result_config);
 
-    var server = new webpackDevServer(compiler, {
+    new webpackDevServer(compiler, {
         contentBase: path.resolve('public'),
         hot: true,
         stats: {colors: true},
@@ -34,8 +35,4 @@ wpBuilder(Program.env).then(function (config) {
         console.log('listening');
     });
 
-}).catch(function (err) {
-    console.error(err);
-
-    return err;
 });
