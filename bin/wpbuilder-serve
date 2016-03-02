@@ -21,6 +21,7 @@ wpBuilder(Program.env, function (config) {
         'webpack/hot/only-dev-server'
     );
 
+    console.log(result_config.plugins);
     var compiler = webpack(result_config);
 
     new webpackDevServer(compiler, {
