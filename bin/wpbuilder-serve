@@ -13,8 +13,8 @@ Program
     .parse(process.argv);
 
 
-wpBuilder(Program.env, function (config) {
-    var result_config = config;
+wpBuilder(Program.env, function (resultConfig) {
+    var result_config = resultConfig;
 
     result_config.entry.app.push(
         'webpack-dev-server/client?http://' + Program.host + ':' + Program.port,
@@ -23,12 +23,18 @@ wpBuilder(Program.env, function (config) {
 
     var compiler = webpack(result_config);
 
-    new webpackDevServer(compiler, {
+    var config = {
         contentBase: path.resolve('public'),
         hot: true,
         stats: {colors: true},
         historyApiFallback: true
-    }).listen(Program.port, Program.host, function (err) {
+    };
+
+    if (typeof resultConfig.devServer !== 'undefined') {
+        config = Object.assign(config, resultConfig.devServer);
+    }
+
+    new webpackDevServer(compiler, config).listen(Program.port, Program.host, function (err) {
         if (err) throw err;
 
         console.log('listening');

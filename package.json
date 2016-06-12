@@ -1,6 +1,6 @@
 {
   "name": "wpbuilder",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Webpack build system for fast building architecture ",
   "author": "Tony Sch. <anthony@abrend.com> (https://github.com/mochachai)",
   "license": "MIT",
