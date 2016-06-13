@@ -1,4 +1,0 @@
-{
-  "environments": "./test/environments",
-  "core": "./test/core_config.js"
-}
