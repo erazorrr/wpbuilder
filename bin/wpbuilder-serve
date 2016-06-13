@@ -1,43 +1,68 @@
 #!/usr/bin/env node
 
-var Program = require('commander');
-var wpBuilder = require('./../lib/index.js');
-var webpack = require('webpack');
-var webpackDevServer = require('webpack-dev-server');
 var path = require('path');
 
+var Program = require('commander');
+var webpack = require('webpack');
+var clc = require('cli-color');
+var WebpackDevServer = require('webpack-dev-server');
+
+var wpBuilder = require('./../lib/index');
+var utils = require('./../lib/utils');
+var isArray = require('lodash.isarray');
+var errorLog = clc.red.bold;
+
 Program
-    .option('-p, --port [number]', 'specify a port [number]', 8080)
-    .option('-h, --host [host]', 'specify hostname', 'localhost')
-    .option('-e, --env [env]', 'specify an environment', 'development')
-    .parse(process.argv);
+  .option('-p, --port [number]', 'specify a port [number]', 8080)
+  .option('-h, --host [host]', 'specify hostname', 'localhost')
+  .option('-e, --env [env]', 'specify an environment', 'development')
+  .parse(process.argv);
 
+utils.readWpBuilderRc().then(function (result) {
+  var rootDir = process.cwd();
 
-wpBuilder(Program.env, function (resultConfig) {
-    var result_config = resultConfig;
+  wpBuilder({
+    dirEnvironments: result.environments || rootDir + '/config/webpack/environments',
+    pathToCoreConfig: result.core || rootDir + 'config/webpack/core.config.js',
+    environment: Program.env
+  }).then(function (config) {
+    var resultConfig = config;
+    console.log(resultConfig);
 
-    result_config.entry.app.push(
+    if (typeof resultConfig.entry.app !== 'undefined' && isArray(resultConfig.entry.app)) {
+      resultConfig.entry.app.unshift(
         'webpack-dev-server/client?http://' + Program.host + ':' + Program.port,
         'webpack/hot/only-dev-server'
-    );
+      );
+    } else {
+      resultConfig.entry.app = [
+        'webpack-dev-server/client?http://' + Program.host + ':' + Program.port,
+        'webpack/hot/only-dev-server'
+      ];
+    }
 
-    var compiler = webpack(result_config);
-
-    var config = {
-        contentBase: path.resolve('public'),
-        hot: true,
-        stats: {colors: true},
-        historyApiFallback: true
+    var compiler = webpack(resultConfig);
+    var configDevServer = {
+      contentBase: path.resolve('public'),
+      hot: true,
+      stats: {
+        colors: true
+      },
+      noInfo: false,
+      historyApiFallback: true
     };
 
     if (typeof resultConfig.devServer !== 'undefined') {
-        config = Object.assign(config, resultConfig.devServer);
+      configDevServer = utils.mergeTwoObject(configDevServer, resultConfig.devServer);
     }
+    new WebpackDevServer(compiler, configDevServer).listen(Program.port, Program.host, function (err) {
+      if (err) throw err;
 
-    new webpackDevServer(compiler, config).listen(Program.port, Program.host, function (err) {
-        if (err) throw err;
-
-        console.log('listening');
+      console.log('listening port ' + Program.port);
     });
-
+  }).catch(function (err) {
+    console.error(errorLog(err));
+  });
+}).catch(function (err) {
+  console.error(errorLog(err));
 });

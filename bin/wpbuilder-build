@@ -2,19 +2,35 @@
 
 var Program = require('commander');
 var webpack = require('webpack');
+var clc = require('cli-color');
+var errorLog = clc.red.bold;
+
 var wpBuilder = require('./../lib/index.js');
+var utils = require('./../lib/utils');
 
 Program
     .option('-e, --env [env]', 'specify an environment', 'production')
     .parse(process.argv);
 
 
-wpBuilder(Program.env, function (config) {
-    webpack(config, function (err, stats) {
-        if (err) throw err;
+utils.readWpBuilderRc().then(function (result) {
+  var rootDir = process.cwd();
 
-        console.log(stats.toString({
-            colors: true
-        }));
+  wpBuilder({
+    dirEnvironments: result.environments || rootDir + '/config/webpack/environments',
+    pathToCoreConfig: result.core || rootDir + 'config/webpack/core.config.js',
+    environment: Program.env
+  }).then(function (config) {
+    webpack(config, function (err, stats) {
+      if (err) throw err;
+
+      console.log(stats.toString({
+        colors: true
+      }));
     });
+  }).catch(function (err) {
+    console.error(errorLog(err));
+  });
+}).catch(function (err) {
+  console.error(errorLog(err));
 });

@@ -1,0 +1,5 @@
+--recursive
+--ui bdd
+--growl
+--reporter spec
+--require ./test/test_helper

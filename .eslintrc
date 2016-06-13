@@ -1,27 +1,23 @@
 {
-  "rules": {
-    "no-var": 0,
-    "valid-jsdoc": 2,
-    "indent": [
-      2,
-      4
-    ],
-    "no-console": 0,
-    "quotes": [
-      2,
-      "single"
-    ],
-    "linebreak-style": [
-      2,
-      "unix"
-    ],
-    "semi": [
-      2,
-      "always"
-    ]
-  },
+  "root": true,
+  "extends": "airbnb-base/legacy",
   "env": {
     "node": true
   },
-  "extends": "eslint:recommended"
+  "globals": {
+    "Promise": false
+  },
+  "rules": {
+    "func-names": 0,
+    "global-require": 0,
+    "vars-on-top": 0,
+    "max-len": ["error", 150],
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ]
+  }
 }

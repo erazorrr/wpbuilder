@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "extends": "airbnb-base/legacy",
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "func-names": 0,
+    "max-len": ["error", 150]
+  }
+}

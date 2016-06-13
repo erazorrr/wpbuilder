@@ -1,12 +1,20 @@
 {
   "name": "wpbuilder",
-  "version": "1.0.4",
-  "description": "Webpack build system for fast building architecture ",
-  "author": "Tony Sch. <anthony@abrend.com> (https://github.com/mochachai)",
+  "version": "1.0.5",
+  "description": "This is a small library designed to simplify the assembly and application architecture.",
+  "author": "Anton Shchurov <anthony@abrend.com> (https://github.com/mochachai)",
   "license": "MIT",
   "scripts": {
-    "lint": "$(npm bin)/eslint ."
+    "lint": "$(npm bin)/eslint .",
+    "test": "$(npm bin)/mocha",
+    "publish": "npm run lint && npm run test && npm publish"
   },
+  "bin": {
+    "wpbuilder": "./bin/wpbuilder",
+    "wpbuilder-serve": "./bin/wpbuilder-serve",
+    "wpbuilder-build": "./bin/wpbuilder-build"
+  },
+  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/felab/wpbuilder.git"
@@ -19,21 +27,23 @@
     "builder"
   ],
   "devDependencies": {
-    "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^4.0.0",
-    "eslint-plugin-react": "^3.16.1"
+    "chai": "^3.5.0",
+    "eslint": "^2.12.0",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.8.1",
+    "mocha": "^2.5.3"
   },
-  "bin": {
-    "wpbuilder": "./bin/wpbuilder",
-    "wpbuilder-serve": "./bin/wpbuilder-serve",
-    "wpbuilder-build": "./bin/wpbuilder-build"
+  "optionalPeerDependencies": {
+    "webpack-dev-server": "^1.14.1"
+  },
+  "peerDependencies": {
+    "webpack": "^1.13.1"
   },
   "dependencies": {
+    "cli-color": "^1.1.0",
     "commander": "^2.9.0",
     "lodash.isarray": "^4.0.0",
-    "lodash.merge": "^4.0.3",
-    "lodash.mergewith": "^4.3.2",
-    "webpack": "^1.12.12",
-    "webpack-dev-server": "^1.14.1"
+    "lodash.isobject": "^3.0.2",
+    "lodash.mergewith": "^4.4.0"
   }
 }
