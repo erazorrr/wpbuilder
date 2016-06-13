@@ -4,13 +4,11 @@ var path = require('path');
 
 var Program = require('commander');
 var webpack = require('webpack');
-var clc = require('cli-color');
 var WebpackDevServer = require('webpack-dev-server');
 
 var wpBuilder = require('./../lib/index');
 var utils = require('./../lib/utils');
 var isArray = require('lodash.isarray');
-var errorLog = clc.red.bold;
 
 Program
   .option('-p, --port [number]', 'specify a port [number]', 8080)
@@ -18,16 +16,17 @@ Program
   .option('-e, --env [env]', 'specify an environment', 'development')
   .parse(process.argv);
 
-utils.readWpBuilderRc().then(function (result) {
+utils.readWpBuilderRc(function (result) {
   var rootDir = process.cwd();
 
   wpBuilder({
     dirEnvironments: result.environments || rootDir + '/config/webpack/environments',
     pathToCoreConfig: result.core || rootDir + 'config/webpack/core.config.js',
     environment: Program.env
-  }).then(function (config) {
+  }, function (err, config) {
     var resultConfig = config;
-    console.log(resultConfig);
+
+    if (err) throw err;
 
     if (typeof resultConfig.entry.app !== 'undefined' && isArray(resultConfig.entry.app)) {
       resultConfig.entry.app.unshift(
@@ -55,14 +54,10 @@ utils.readWpBuilderRc().then(function (result) {
     if (typeof resultConfig.devServer !== 'undefined') {
       configDevServer = utils.mergeTwoObject(configDevServer, resultConfig.devServer);
     }
-    new WebpackDevServer(compiler, configDevServer).listen(Program.port, Program.host, function (err) {
-      if (err) throw err;
+    new WebpackDevServer(compiler, configDevServer).listen(Program.port, Program.host, function (errDevServer) {
+      if (errDevServer) throw errDevServer;
 
       console.log('listening port ' + Program.port);
     });
-  }).catch(function (err) {
-    console.error(errorLog(err));
   });
-}).catch(function (err) {
-  console.error(errorLog(err));
 });

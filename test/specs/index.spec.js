@@ -35,16 +35,16 @@ describe('Testing functions', function () {
   describe('::getListNamesEnvironments', function () {
     var environments;
 
-    before(function () {
-      environments = utils.getListNamesEnvironments(path.resolve('./test/environments'));
+    before(function (done) {
+      utils.getListNamesEnvironments(path.resolve('./test/environments'), function (result) {
+        environments = result;
+        done();
+      });
     });
 
     it('should return a list of environments where there are development and production', function () {
-      environments.should.be.an('promise');
-      return environments.then(function (result) {
-        result.should.be.an('array');
-        result.should.eql(['development', 'production']);
-      });
+      environments.should.be.an('array');
+      environments.should.eql(['development', 'production']);
     });
   });
 });
@@ -52,47 +52,43 @@ describe('Testing functions', function () {
 describe('WP_BUILDER', function () {
   var finalyDevConfig = null;
 
-  before(function () {
-    finalyDevConfig = wpBuilder({
+  before(function (done) {
+    wpBuilder({
       dirEnvironments: path.resolve('./test/environments'),
       pathToCoreConfig: path.resolve('./test/core_config.js'),
       environment: 'development'
+    }, function (err, result) {
+      finalyDevConfig = result;
+      done();
     });
   });
 
   it('should be return promise type', function () {
-    finalyDevConfig.should.be.an('promise');
+    finalyDevConfig.should.be.an('object');
   });
 
-  it('should be return object of promise', function () {
-    return finalyDevConfig.then(function (result) {
-      result.should.be.an('object');
-    });
-  });
   it('should be return merged config with development and core', function () {
-    return finalyDevConfig.then(function (result) {
-      result.should.deep.equal({
-        debug: true,
-        cache: true,
-        watch: true,
-        devtool: 'eval',
-        plugins: [
-          new webpack.DefinePlugin({
-            _DEVELOPMENT_: 'true',
-            _PRODUCTION_: 'false'
-          })
-        ],
-        entry: {
-          vendors: [
-            'lodash.isobject',
-            'lodash.isarray'
-          ]
-        },
-        output: {
-          path: path.resolve('./public'),
-          publicPath: '/'
-        }
-      });
+    return finalyDevConfig.should.deep.equal({
+      debug: true,
+      cache: true,
+      watch: true,
+      devtool: 'eval',
+      plugins: [
+        new webpack.DefinePlugin({
+          _DEVELOPMENT_: 'true',
+          _PRODUCTION_: 'false'
+        })
+      ],
+      entry: {
+        vendors: [
+          'lodash.isobject',
+          'lodash.isarray'
+        ]
+      },
+      output: {
+        path: path.resolve('./public'),
+        publicPath: '/'
+      }
     });
   });
 });

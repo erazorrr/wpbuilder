@@ -40,7 +40,6 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
-    "cli-color": "^1.1.0",
     "commander": "^2.9.0",
     "lodash.isarray": "^4.0.0",
     "lodash.isobject": "^3.0.2",
