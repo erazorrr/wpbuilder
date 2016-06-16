@@ -21,7 +21,7 @@ utils.readWpBuilderRc(function (result) {
 
   wpBuilder({
     dirEnvironments: result.environments || rootDir + '/config/webpack/environments',
-    pathToCoreConfig: result.core || rootDir + 'config/webpack/core.config.js',
+    pathToCoreConfig: result.core || rootDir + '/config/webpack/core.config.js',
     environment: Program.env
   }, function (err, config) {
     var resultConfig = config;
